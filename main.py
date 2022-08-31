@@ -1,32 +1,25 @@
-# # Deep Q-Network (DQN)
+# Deep Q-Network (DQN) approach to training banana-collecting agent
 # ---
-# DQN agent with OpenAI Gym's LunarLander-v2 environment.
 
-import gym
-import random
 import torch
 import numpy as np
 from collections import deque
-import matplotlib.pyplot as plt
 from dqn_agent import Agent
+from unityagents import UnityEnvironment
 
 
 # First configure the environment
-env = gym.make('LunarLander-v2')
-env.seed(0)
+# NOTE: I have configured for LINUX.
+env = UnityEnvironment(file_name="Banana_Linux/Banana.x86_64")
 
-agent = Agent(state_size=np.prod(env.observation_space.shape),
-              action_size=env.action_space.n, seed=0)
+# get the default brain
+brain_name = env.brain_names[0]
+brain = env.brains[brain_name]
 
-# # watch an untrained agent
-# state = env.reset()
-# for j in range(200):
-#     action = agent.act(state)
-#     env.render()
-#     state, reward, done, _ = env.step(action)
-#     if done:
-#         break
-# env.close()
+# Grab the environment info as well to set up the agent
+env_info = env.reset(train_mode=True)[brain_name]
+agent = Agent(state_size=len(env_info.vector_observations[0]),
+              action_size=brain.vector_action_space_size, seed=0)
 
 
 # Train the agent
@@ -45,11 +38,16 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
     scores_window = deque(maxlen=100)  # last 100 scores
     eps = eps_start                    # initialize epsilon
     for i_episode in range(1, n_episodes+1):
-        state = env.reset()
-        score = 0
+        env_info = env.reset(train_mode=True)[brain_name] # reset the environment
+        state = env_info.vector_observations[0]            # get the current state
+        score = 0                                          # initialize the score
+        # We will leave a maximum time in here for now
         for t in range(max_t):
             action = agent.act(state, eps)
-            next_state, reward, done, _ = env.step(action)
+            env_info = env.step(action)[brain_name]
+            next_state = env_info.vector_observations[0]
+            reward = env_info.rewards[0]
+            done = env_info.local_done[0]
             agent.step(state, action, reward, next_state, done)
             state = next_state
             score += reward
@@ -61,26 +59,13 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
         if i_episode % 100 == 0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
-        if np.mean(scores_window)>=200.0:
+        if np.mean(scores_window)>=13:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode-100, np.mean(scores_window)))
             torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
             break
     return scores
 
 scores = dqn()
-
-
-# Before running the next code cell, familiarize yourself with the code in **Step 2** and **Step 3** of this notebook, along with the code in `dqn_agent.py` and `model.py`.  Once you have an understanding of how the different files work together,
-# - Define a neural network architecture in `model.py` that maps states to action values.  This file is mostly empty - it's up to you to define your own deep Q-network!
-# - Finish the `learn` method in the `Agent` class in `dqn_agent.py`.  The sampled batch of experience tuples is already provided for you; you need only use the local and target Q-networks to compute the loss, before taking a step towards minimizing the loss.
-#
-# Once you have completed the code in `dqn_agent.py` and `model.py`, run the code cell below.  (_If you end up needing to make multiple changes and get unexpected behavior, please restart the kernel and run the cells from the beginning of the notebook!_)
-#
-# You can find the solution files, along with saved model weights for a trained agent, in the `solution/` folder.  (_Note that there are many ways to solve this exercise, and the "solution" is just one way of approaching the problem, to yield a trained agent._)
-
-# In[ ]:
-
-
 
 
 # # ### 3. Train the Agent with DQN
