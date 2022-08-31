@@ -29,9 +29,11 @@ The task is episodic, and in order to solve the environment, the agent must get 
 
     (_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux_NoVis.zip) to obtain the environment.
 
-2. Place the file in the DRLND GitHub repository, in the `p1_navigation/` folder, and unzip (or decompress) the file.
+2. Place the file in the root of this repository and unzip (or decompress) the file.
 
-3. Other necessary install instructions for dependencies can be found in the DRLND github repo [located here](https://github.com/udacity/Value-based-methods#dependencies).
+3. Change line 14 of `main.py` accordingly if you are using something that is not 64-bit linux (but you should be ;)).
+
+4. Other necessary install instructions for dependencies can be found in the DRLND github repo [located here](https://github.com/udacity/Value-based-methods#dependencies).
 
 ## Repository Anatomy
 
@@ -42,7 +44,7 @@ When all dependencies are installed, the agent itself can be initialized and tra
 As long as `./checkpoint.pth` is present, executing `python demo.py` will show the trained agent in action, collecting its bananas!
 
 ### dqn_agent.py
-This file contains the code for the learning agent itself, complete with the training logic.  A more detailed overview can be found in (the report)[./Report.md]
+This file contains the code for the learning agent itself, complete with the training logic.  A more detailed overview can be found in [the report](Report.md)
 
 ### model.py
-This file contains the pytorch-based neural network that is used to determine agent actions for a given state.  Again, a detailed overview can be found in (the report)[./Report.md]
+This file contains the pytorch-based neural network that is used to determine agent actions for a given state.  Again, a detailed overview can be found in [the report](Report.md)

@@ -29,18 +29,19 @@ The learning-rate for this propagation (loosely, the length of the step of the s
 | Discount Factor | 0.99 |
 | Soft Update Parameter| 0.99  |
 | Learning Rate | 5e-4 |
-| Network Update Rate | 4 | 
+| Network Update Rate | 4 |
 
 # Outcome
-This agent was able to train in 543 episodes.  The result of that training can be seen below.
+**This agent was able to train to the success criterion in 543 episodes.**  The result of that training can be seen below.
 
-!(Training History)[./Training_History.png]
+![Training History](Training_History.png)
 
 # Future Work
 The performance of this agent could be improved in a variety of ways.
 The easiest of these include continuing to tune the hyper parameters and increasing the threshold for successful training.
 Another easy improvement might be implementing prioritized experience replay so that only "interesting" samples are saved, where interesting samples are those that have comparatively large temporal difference terms.
 
-With more effort, performance could be improved by moving away from simple DQN to either double DQN or dueling DQN or moving to a completely different training method like soft-actor-critic.
+With more effort, performance could be improved by moving away from simple DQN to either double DQN or dueling DQN.
 
-At the far end of the spectrum, perhaps adversiarial reinforcement learning could be employed to simultaneously modify the Unity environment to place bananas in the meanest possible way, the sky is the limit!
+At the far end of the spectrum, the space of actions could be made continuous and DQN to give way to Deep Deterministic Policy Gradient (DDPG).
+This could certainly increase the ability of the agent to navigate within the environment and should inevitably increase performance, but it would require changes to both the agent and the environment which is probably out of scope.
