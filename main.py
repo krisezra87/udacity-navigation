@@ -18,6 +18,9 @@ brain = env.brains[brain_name]
 
 # Grab the environment info as well to set up the agent
 env_info = env.reset(train_mode=True)[brain_name]
+
+# Set up the agent generically for state and action sizes.  Can't ever be TOO
+# portable!
 agent = Agent(state_size=len(env_info.vector_observations[0]),
               action_size=brain.vector_action_space_size, seed=0)
 
@@ -67,15 +70,6 @@ def dqn(n_episodes=2000, max_t=1000, eps_start=1.0, eps_end=0.01, eps_decay=0.99
 
 scores = dqn()
 
-
-# # ### 3. Train the Agent with DQN
-# #
-# # Run the code cell below to train the agent from scratch.  You are welcome to amend the supplied values of the parameters in the function, to try to see if you can get better performance!
-#
-# # In[ ]:
-#
-#
-#
 # # plot the scores
 # fig = plt.figure()
 # ax = fig.add_subplot(111)
@@ -105,11 +99,3 @@ scores = dqn()
 #             break
 #
 # env.close()
-#
-#
-# # ### 5. Explore
-# #
-# # In this exercise, you have implemented a DQN agent and demonstrated how to use it to solve an OpenAI Gym environment.  To continue your learning, you are encouraged to complete any (or all!) of the following tasks:
-# # - Amend the various hyperparameters and network architecture to see if you can get your agent to solve the environment faster.  Once you build intuition for the hyperparameters that work well with this environment, try solving a different OpenAI Gym task with discrete actions!
-# # - You may like to implement some improvements such as prioritized experience replay, Double DQN, or Dueling DQN!
-# # - Write a blog post explaining the intuition behind the DQN algorithm and demonstrating how to use it to solve an RL environment of your choosing.
